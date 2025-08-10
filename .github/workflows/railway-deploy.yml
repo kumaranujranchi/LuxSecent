@@ -19,22 +19,21 @@ jobs:
           node-version: 20
           cache: 'npm'
 
-      - name: Install deps
+      - name: Install root deps
         run: npm ci
 
-      - name: Build
+      - name: Build web
         run: npm run build
 
-      - name: Upload artifacts (dist)
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist
+      - name: Install API deps
+        run: |
+          cd server
+          npm ci
+          npx prisma generate
 
       - name: Deploy to Railway
         uses: railwayapp/railway-action@v1
         with:
-          service: ${{ secrets.RAILWAY_SERVICE_ID }}
           project: ${{ secrets.RAILWAY_PROJECT_ID }}
+          service: ${{ secrets.RAILWAY_SERVICE_ID }}
           railwayToken: ${{ secrets.RAILWAY_TOKEN }}
-          # If using Nixpacks build on Railway, just pushing repo triggers build.
