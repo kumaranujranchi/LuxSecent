@@ -26,11 +26,15 @@ VITE_API_URL=
 ```
 
 ## Deploy to Railway (frontend)
-1. Push this repo to GitHub.
-2. On Railway, create a New Project → Deploy from GitHub → select this repo.
-3. Build command: `npm run build`
-4. Static publish: `dist`
-5. Set any `VITE_...` env vars in Railway → Variables.
+- Option A (Dashboard): Connect GitHub repo in Railway → set build: `npm run build` and start: `npm start` (serves `dist` via Caddy).
+- Option B (GitHub Actions): We include `.github/workflows/railway-deploy.yml`.
+  - Add GitHub Secrets:
+    - `RAILWAY_TOKEN` – from Railway account settings.
+    - `RAILWAY_PROJECT_ID` – Railway project → Settings → Project ID.
+    - `RAILWAY_SERVICE_ID` – Service → Settings → Service ID.
+  - Push to `main` to trigger deployment.
+
+Caddyfile is configured for SPA fallback to `index.html` and uses `$PORT` from Railway.
 
 ## License
 MIT

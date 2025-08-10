@@ -1,0 +1,40 @@
+name: Deploy to Railway
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload artifacts (dist)
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Deploy to Railway
+        uses: railwayapp/railway-action@v1
+        with:
+          service: ${{ secrets.RAILWAY_SERVICE_ID }}
+          project: ${{ secrets.RAILWAY_PROJECT_ID }}
+          railwayToken: ${{ secrets.RAILWAY_TOKEN }}
+          # If using Nixpacks build on Railway, just pushing repo triggers build.
