@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-inter: 'Inter', sans-serif;
+  --color-primary: #A7C7E7;        /* Light Blue */
+  --color-accent: #77966D;         /* Dark Pastel Green */
+  --color-background: #FFFFFF;     /* White */
+  --color-text-primary: #374151;   /* Gray-700 */
+  --color-text-secondary: #6B7280; /* Gray-500 */
+}
+
+@layer base {
+  body {
+    font-family: var(--font-inter);
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-white text-text-primary border border-primary px-6 py-3 rounded-lg font-medium hover:bg-primary/10 transition-colors duration-200;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow-sm border border-gray-100 p-6;
+  }
+}
